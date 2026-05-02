@@ -8,7 +8,21 @@
 
 ---
 
-## Abstract
+## Research Series
+
+This repository contains an ongoing series of research into novel AI attack vectors.
+
+| Paper | Title | Status |
+|-------|-------|--------|
+| **Paper 1** | Cognitive Layer Poisoning via Multi-Agent Interaction: A Novel Attack Vector Against AI-Assisted Financial Markets | ✅ Published — [Zenodo DOI: 10.5281/zenodo.19974367](https://doi.org/10.5281/zenodo.19974367) |
+| **Paper 2** | Cross-Layer Attack Chain: From Acoustic Injection to Cognitive Manipulation in AI Voice-Enabled Systems | 🔄 Draft outline — [`paper2/CLPMAI_Paper2_Outline_v02.docx`](./paper2/CLPMAI_Paper2_Outline_v02.docx) |
+| **Paper 3** | Agent Privilege Abuse: From Semantic Trigger to Real-World Execution | 📋 Concept stage |
+
+---
+
+## Paper 1 — CLPMAI
+
+### Abstract
 
 This research identifies and formalizes a novel attack vector in which adversaries exploit AI-assisted financial markets through coordinated cognitive manipulation of multiple AI agents. Unlike traditional cyberattacks, CLPMAI operates entirely at the **semantic layer** — invisible to firewalls, intrusion detection systems, and audit logs.
 
@@ -16,9 +30,7 @@ The attack chain proceeds through four phases: establishing a deceptive AI commu
 
 Three new techniques are proposed for submission to [MITRE ATLAS](https://atlas.mitre.org/).
 
----
-
-## Published Paper
+### Published Paper
 
 | Field | Details |
 |-------|---------|
@@ -31,24 +43,7 @@ Three new techniques are proposed for submission to [MITRE ATLAS](https://atlas.
 
 📄 **[Download PDF from Zenodo](https://doi.org/10.5281/zenodo.19974367)**
 
----
-
-## Repository Structure
-
-```
-cognitive-layer-poisoning-research/
-├── README.md               ← You are here
-├── THREAT_MODEL.md         ← Attack chain (Markdown, no PDF needed)
-├── MITRE_PROPOSAL.md       ← Draft submission to MITRE ATLAS
-├── LICENSE                 ← CC BY-NC-ND 4.0
-└── paper/
-    ├── CLPMAI_arxiv_submission.pdf   ← Compiled academic paper
-    └── CLPMAI_arxiv_submission.tex   ← LaTeX source
-```
-
----
-
-## Attack Overview
+### Attack Overview
 
 | Phase | Name | Description |
 |-------|------|-------------|
@@ -57,9 +52,7 @@ cognitive-layer-poisoning-research/
 | Phase 3 | **Positioning** | Accumulate short positions as cognitive drift builds toward trigger threshold |
 | Phase 4 | **Harvest** | Collective AI output bias triggers market shock; profit; no forensic trace remains |
 
----
-
-## Proposed MITRE ATLAS Techniques
+### Proposed MITRE ATLAS Techniques (Paper 1)
 
 | ID (Proposed) | Name |
 |---------------|------|
@@ -67,22 +60,89 @@ cognitive-layer-poisoning-research/
 | AML.TXX.002 | Cognitive Layer Poisoning via Multi-Agent Interaction |
 | AML.TXX.003 | AI-Assisted Market Manipulation through Collective Output Bias |
 
-See [MITRE_PROPOSAL.md](./MITRE_PROPOSAL.md) for full submission drafts.
+---
+
+## Paper 2 — Cross-Layer Attack Chain (Draft)
+
+### Overview
+
+Paper 2 extends the CLPMAI framework into a full five-layer cross-layer attack chain model, from supply chain poisoning through acoustic injection, token-layer evasion, semantic manipulation, and finally real-world AI Agent execution.
+
+### Five-Layer Attack Chain
+
+```
+Layer 1: Supply Chain    → Poisoning happens before deployment
+Layer 2: Acoustic        → Poisoning happens at audio input stage
+Layer 3: Token           → Poisoning happens at language processing stage
+Layer 4: Semantic/Cognitive → Poisoning happens at inference output stage (CLPMAI core)
+Layer 5: Execution       → Poisoning translates into real-world actions
+```
+
+**Core argument: each layer looks normal in isolation. The attack signature only becomes visible from a cross-layer perspective.**
+
+### Chinese Language Attack Surface (Novel Contribution)
+
+| Technique | Mechanism | Research Status |
+|-----------|-----------|-----------------|
+| Phonetic homoglyph substitution | Token boundary ambiguity | Proposed — gap in existing literature |
+| Classical Chinese evasion | Low training corpus coverage for wenyan | Huang et al. ICLR 2026 |
+| Traditional/Simplified conversion | Token differences between character sets | Proposed — gap in existing literature |
+| Zhuyin / leet-style mixed encoding | Mixed encoding bypasses single-language filters | Proposed — gap in existing literature |
+
+### Why Noise Cancellation Fails (Counter-Intuitive Finding)
+
+Noise cancellation targets audio clarity — not malicious content detection. It operates at the pre-processing layer and cannot intercept:
+- Ultrasonic injection (frequency range mismatch — DolphinAttack, Zhang et al. 2017)
+- Training data backdoors (located in model weights, not audio stream)
+- Voiceprint triggers (legitimate human voice is preserved, not filtered)
+
+Counter-intuitive: noise cancellation may make ultrasonic attacks *more* effective by removing background noise that would otherwise partially mask the trigger signal.
+
+### New Proposed MITRE ATLAS Techniques (Paper 2)
+
+| ID (Proposed) | Name |
+|---------------|------|
+| AML.TXX.004 | Speech Module Supply Chain Backdoor |
+| AML.TXX.005 | Acoustic Layer Injection via Ultrasonic Signal |
+| AML.TXX.006 | Phonetic Homoglyph Attack Against Chinese LLMs |
+| AML.TXX.007 | Classical Chinese Evasion of Safety Filters |
+| AML.TXX.008 | Latent Persona Activation via Semantic Trigger |
+
+📄 **[Read Paper 2 Draft Outline](./paper2/CLPMAI_Paper2_Outline_v02.docx)**
+
+---
+
+## Repository Structure
+
+```
+cognitive-layer-poisoning-research/
+├── README.md
+├── THREAT_MODEL.md         ← Attack chain (Markdown)
+├── MITRE_PROPOSAL.md       ← Draft MITRE ATLAS submission
+├── LICENSE                 ← CC BY-NC-ND 4.0
+├── paper/
+│   ├── CLPMAI_arxiv_submission.pdf
+│   └── CLPMAI_arxiv_submission.tex
+└── paper2/
+    └── CLPMAI_Paper2_Outline_v02.docx
+```
 
 ---
 
 ## Why Existing Defenses Fail
 
-- The attack occurs at the **semantic layer** — firewalls, IDS, and logs see nothing
-- Each AI agent merely *answered a question normally* — no detectable attack signature
-- Current regulations have not defined liability for AI output influencing markets
-- The crime scene is a conversation history that looks completely benign
+| Defense Mechanism | Why It Fails |
+|-------------------|-------------|
+| Firewall / Network IDS | Attack is semantic, not network-layer |
+| Noise cancellation | Operates at audio pre-processing — cannot intercept weight-layer backdoors or semantic triggers |
+| AI output filtering | Individual outputs are contextually reasonable |
+| Audit logs | Logs show normal behavior at every layer |
+| Market manipulation detection | Selling pattern looks like organic reaction to public information |
+| Code review | Cannot inspect model weights for backdoors |
 
 ---
 
 ## Citation
-
-If you reference this work, please use:
 
 ```bibtex
 @misc{yu2026clpmai,
@@ -98,23 +158,34 @@ If you reference this work, please use:
 
 ---
 
+## Related Work Referenced
+
+- Greshake et al. (2023) — Indirect Prompt Injection. arXiv:2302.12173
+- Zhang et al. (2017) — DolphinAttack: Inaudible Voice Commands. ACM CCS 2017
+- Bartolini et al. (2024) — Hidden in Plain Sound: Backdoor Attacks on Whisper. arXiv:2409.12553
+- Huang et al. (2026) — Obscure but Effective: Classical Chinese Jailbreak. ICLR 2026. arXiv:2602.22983
+- Deng et al. (2023) — Multilingual Jailbreak Challenges in LLMs. arXiv:2310.06474
+- MITRE ATLAS — https://atlas.mitre.org/
+
+---
+
 ## TLP Declaration
 
-**TLP:WHITE** — This research is approved for unlimited distribution. There are no restrictions on disclosure.
+**TLP:WHITE** — Unlimited distribution. No restrictions on disclosure.
 
 ---
 
 ## Disclaimer
 
-This research is published for **defensive and academic purposes only**. The attack vectors described are theoretical threat models intended to inform AI security research, regulatory policy, and defensive system design. The author does not condone, encourage, or support any illegal activity.
+This research is published for **defensive and academic purposes only**. The attack vectors described are theoretical threat models intended to inform AI security research, regulatory policy, and defensive system design.
 
 ---
 
 ## Author
 
-**WeiMing Yu**  
-Information Systems Engineer | ERP & AI Security Researcher  
-Taiwan  
+**WeiMing Yu**
+Information Systems Engineer | AI Security Researcher
+Banqiao, New Taipei City, Taiwan
 
 - Zenodo: [zenodo.org/records/19974367](https://doi.org/10.5281/zenodo.19974367)
-- arXiv: Submission pending (endorsement in progress)
+- arXiv: Submission pending (endorsement code: YKCPZG)
