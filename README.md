@@ -19,7 +19,10 @@ This repository contains an ongoing series of research into novel AI attack vect
 | **Paper 3** | Agent Privilege Abuse: From Semantic Trigger to Real-World Execution | 📋 Concept stage |
 
 ---
+## Live Demo
 
+**[CLPMAI 互動式攻擊模擬](https://weimingyu.github.io/cognitive-layer-poisoning-research/clpmai_simulation.html)**  
+體驗一場真實發生在 AI 時代的認知層攻擊。選擇你的角色，走過完整的被攻擊流程，最後揭曉真相。
 ## Paper 1 — CLPMAI
 
 ### Abstract
