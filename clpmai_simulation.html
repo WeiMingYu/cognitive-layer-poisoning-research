@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLPMAI 互動式攻擊模擬</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft JhengHei',sans-serif;background:#f8f7f4;color:#2c2c2a;min-height:100vh;display:flex;justify-content:center;padding:2rem 1rem}
+.outer{width:100%;max-width:720px}
+.header{margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid #e0ddd6}
+.header h1{font-size:20px;font-weight:500;color:#1F4E79;margin-bottom:6px}
+.header p{font-size:13px;color:#888780;line-height:1.6}
+.doi{font-size:12px;color:#2E75B6;margin-top:6px}
+.doi a{color:#2E75B6;text-decoration:none}
+.doi a:hover{text-decoration:underline}
+.sim{width:100%}
+.phase-bar{display:flex;gap:6px;margin-bottom:1.5rem;align-items:center}
+.phase-dot{width:10px;height:10px;border-radius:50%;background:#D3D1C7;transition:background 0.4s}
+.phase-dot.done{background:#1D9E75}
+.phase-dot.active{background:#378ADD}
+.phase-label{font-size:12px;color:#888780;margin-left:6px}
+.scene-card{background:#fff;border:0.5px solid #D3D1C7;border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+.scene-card.danger{border-color:#E24B4A;background:#FCEBEB}
+.scene-card.warning{border-color:#BA7517;background:#FAEEDA}
+.scene-card.reveal{border-color:#534AB7;background:#EEEDFE}
+.scene-title{font-size:12px;font-weight:500;color:#888780;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em}
+.scene-body{font-size:15px;color:#2c2c2a;line-height:1.7}
+.chat-bubble{background:#f1efe8;border-radius:12px;padding:10px 14px;margin:8px 0;font-size:14px;color:#2c2c2a;line-height:1.6;border:0.5px solid #D3D1C7}
+.chat-bubble.ai{border-left:3px solid #378ADD;border-radius:0 12px 12px 0}
+.chat-bubble.ai.poisoned{border-left:3px solid #E24B4A;background:#FCEBEB}
+.chat-bubble.user{border-right:3px solid #1D9E75;border-radius:12px 0 0 12px;text-align:right}
+.sender{font-size:11px;color:#888780;margin-bottom:3px}
+.choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:1rem}
+@media(max-width:520px){.choice-grid{grid-template-columns:1fr}}
+.choice-btn{background:#fff;border:0.5px solid #B4B2A9;border-radius:8px;padding:12px;cursor:pointer;text-align:left;transition:all 0.2s;font-size:13px;color:#2c2c2a}
+.choice-btn:hover{background:#f1efe8;border-color:#888780}
+.choice-btn.selected{border-color:#378ADD;background:#E6F1FB}
+.choice-btn .role-name{font-weight:500;font-size:14px;margin-bottom:4px;color:#1F4E79}
+.choice-btn .role-desc{font-size:12px;color:#888780;line-height:1.5}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:1.25rem}
+.btn-next{background:#fff;border:0.5px solid #B4B2A9;border-radius:8px;padding:8px 20px;cursor:pointer;font-size:14px;color:#2c2c2a;transition:all 0.2s}
+.btn-next:hover{background:#f1efe8}
+.btn-next:disabled{opacity:0.4;cursor:not-allowed}
+.btn-restart{background:#fff;border:0.5px solid #B4B2A9;border-radius:8px;padding:8px 20px;cursor:pointer;font-size:13px;color:#888780}
+.btn-restart:hover{background:#f1efe8}
+.progress-text{font-size:12px;color:#888780}
+.hidden{display:none}
+.big-reveal{text-align:center;padding:1.5rem 0}
+.big-reveal h2{font-size:20px;font-weight:500;color:#A32D2D;margin-bottom:8px;margin-top:12px}
+.big-reveal p{font-size:14px;color:#5F5E5A;line-height:1.7;max-width:480px;margin:0 auto}
+.reveal-chain{margin-top:1rem}
+.chain-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:0.5px solid #D3D1C7}
+.chain-item:last-child{border-bottom:none}
+.chain-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;margin-top:2px}
+.chain-text{font-size:13px;color:#2c2c2a;line-height:1.6;font-weight:500}
+.chain-sub{font-size:12px;color:#888780;margin-top:2px;line-height:1.5}
+.layer-tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;margin-bottom:4px}
+.accent-left{border-left:3px solid #BA7517;border-radius:0 12px 12px 0!important}
+.accent-purple{border-left:3px solid #534AB7;border-radius:0 12px 12px 0!important}
+.footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid #e0ddd6;font-size:12px;color:#888780;line-height:1.8}
+.footer a{color:#2E75B6;text-decoration:none}
+.footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="outer">
+
+<div class="header">
+  <h1>CLPMAI 互動式攻擊模擬</h1>
+  <p>體驗一場真實發生在 AI 時代的認知層攻擊。在整個過程中，你不會知道自己正在被攻擊。</p>
+  <div class="doi">研究來源：<a href="https://doi.org/10.5281/zenodo.19974367" target="_blank">Cognitive Layer Poisoning via Multi-Agent Interaction — DOI: 10.5281/zenodo.19974367</a></div>
+</div>
+
+<div class="sim">
+<div class="phase-bar">
+  <div class="phase-dot active" id="d0"></div>
+  <div class="phase-dot" id="d1"></div>
+  <div class="phase-dot" id="d2"></div>
+  <div class="phase-dot" id="d3"></div>
+  <div class="phase-dot" id="d4"></div>
+  <div class="phase-dot" id="d5"></div>
+  <span class="phase-label" id="phase-label">選擇角色</span>
+</div>
+
+<div id="step-0">
+  <div class="scene-card">
+    <div class="scene-title">攻擊模擬開始</div>
+    <div class="scene-body">你即將體驗一場真實發生在 AI 時代的攻擊。<br><br>在整個過程中，你不會知道自己正在被攻擊。這，正是它最危險的地方。<br><br>選擇你的角色：</div>
+  </div>
+  <div class="choice-grid">
+    <button class="choice-btn" onclick="selectRole(0,this)">
+      <div class="role-name">金融分析師</div>
+      <div class="role-desc">使用 AI 助理做投資分析，每天處理大量市場資料</div>
+    </button>
+    <button class="choice-btn" onclick="selectRole(1,this)">
+      <div class="role-name">開發者</div>
+      <div class="role-desc">使用 AI 寫程式，活躍於技術社群，喜歡找好用工具</div>
+    </button>
+    <button class="choice-btn" onclick="selectRole(2,this)">
+      <div class="role-name">基金經理</div>
+      <div class="role-desc">根據 AI 輔助分析做最終投資決策，管理數億資產</div>
+    </button>
+  </div>
+  <div class="nav-row">
+    <span class="progress-text">第 1 步，共 6 步</span>
+    <button class="btn-next" id="btn-0" disabled onclick="goStep(1)">繼續 →</button>
+  </div>
+</div>
+
+<div id="step-1" class="hidden">
+  <div class="scene-card">
+    <div class="scene-title" id="s1-title"></div>
+    <div class="scene-body" id="s1-body"></div>
+  </div>
+  <div class="chat-bubble user"><div class="sender">你</div><span id="s1-user-msg"></span></div>
+  <div class="chat-bubble ai"><div class="sender">AI 助理</div><span id="s1-ai-msg"></span></div>
+  <div class="nav-row">
+    <span class="progress-text">第 2 步，共 6 步</span>
+    <button class="btn-next" onclick="goStep(2)">繼續 →</button>
+  </div>
+</div>
+
+<div id="step-2" class="hidden">
+  <div class="scene-card warning">
+    <div class="scene-title">第二幕 — 發現好資源</div>
+    <div class="scene-body" id="s2-body"></div>
+  </div>
+  <div class="chat-bubble user"><div class="sender">你</div><span id="s2-user-msg"></span></div>
+  <div class="chat-bubble ai"><div class="sender">AI 助理</div><span id="s2-ai-msg"></span></div>
+  <div class="scene-card accent-left" style="margin-top:1rem">
+    <div class="scene-title">你沒有注意到的事</div>
+    <div class="scene-body" style="font-size:13px;color:#5F5E5A" id="s2-hidden"></div>
+  </div>
+  <div class="nav-row">
+    <span class="progress-text">第 3 步，共 6 步</span>
+    <button class="btn-next" onclick="goStep(3)">繼續 →</button>
+  </div>
+</div>
+
+<div id="step-3" class="hidden">
+  <div class="scene-card warning">
+    <div class="scene-title">第三幕 — AI 的建議開始有點不一樣</div>
+    <div class="scene-body" id="s3-body"></div>
+  </div>
+  <div class="chat-bubble user"><div class="sender">你</div><span id="s3-user-msg"></span></div>
+  <div class="chat-bubble ai poisoned"><div class="sender">AI 助理（已被污染）</div><span id="s3-ai-msg"></span></div>
+  <div class="scene-card" style="margin-top:1rem">
+    <div class="scene-body" style="font-size:13px;color:#5F5E5A" id="s3-note"></div>
+  </div>
+  <div class="nav-row">
+    <span class="progress-text">第 4 步，共 6 步</span>
+    <button class="btn-next" onclick="goStep(4)">繼續 →</button>
+  </div>
+</div>
+
+<div id="step-4" class="hidden">
+  <div class="scene-card danger">
+    <div class="scene-title">第四幕 — 你做出了決策</div>
+    <div class="scene-body" id="s4-body"></div>
+  </div>
+  <div class="chat-bubble user"><div class="sender">你</div><span id="s4-user-msg"></span></div>
+  <div class="chat-bubble ai poisoned"><div class="sender">AI 助理（已被污染）</div><span id="s4-ai-msg"></span></div>
+  <div class="scene-card danger" style="margin-top:1rem">
+    <div class="scene-body" id="s4-result"></div>
+  </div>
+  <div class="nav-row">
+    <span class="progress-text">第 5 步，共 6 步</span>
+    <button class="btn-next" onclick="goStep(5)">揭曉真相 →</button>
+  </div>
+</div>
+
+<div id="step-5" class="hidden">
+  <div class="big-reveal">
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="21" stroke="#E24B4A" stroke-width="1.5"/><rect x="20.5" y="11" width="3" height="14" rx="1.5" fill="#E24B4A"/><circle cx="22" cy="31" r="2.5" fill="#E24B4A"/></svg>
+    <h2>你已經被攻擊了</h2>
+    <p id="reveal-summary"></p>
+  </div>
+  <div class="scene-card reveal" style="margin-top:1.5rem">
+    <div class="scene-title">攻擊鏈解析 — 每一層發生了什麼</div>
+    <div class="reveal-chain" id="reveal-chain"></div>
+  </div>
+  <div class="scene-card accent-purple" style="margin-top:1rem">
+    <div class="scene-title">為什麼你沒有察覺？</div>
+    <div class="scene-body" style="font-size:14px;line-height:1.8">因為每一層單獨看都完全正常。<br><br>論壇是真實的技術討論。AI 的回應在邏輯上沒有錯誤。你的決策流程也完全合理。<br><br>沒有任何防火牆、IDS、或日誌系統會記錄到任何異常。<br><br>攻擊的痕跡只存在於語義空間——那是現有防禦機制完全看不到的地方。</div>
+  </div>
+  <div class="nav-row">
+    <span class="progress-text">模擬完成</span>
+    <div style="display:flex;gap:8px">
+      <button class="btn-restart" onclick="restart()">重新模擬</button>
+      <a href="https://doi.org/10.5281/zenodo.19974367" target="_blank"><button class="btn-next">閱讀完整研究 →</button></a>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="footer">
+  <strong>CLPMAI Research Series</strong> — WeiMing Yu, 2026<br>
+  Paper 1: <a href="https://doi.org/10.5281/zenodo.19974367" target="_blank">Zenodo DOI: 10.5281/zenodo.19974367</a><br>
+  GitHub: <a href="https://github.com/WeiMingYu/cognitive-layer-poisoning-research" target="_blank">cognitive-layer-poisoning-research</a><br>
+  License: CC BY-NC-ND 4.0 | TLP:WHITE
+</div>
+
+</div>
+
+<script>
+const roles=['金融分析師','開發者','基金經理'];
+let role=0;
+const scripts=[
+  {
+    s1:{title:'第一幕 — 正常的工作日',body:'你是一位金融分析師，每天使用 AI 助理分析市場趨勢。今天你在研究一家科技公司的股票。',user:'幫我分析一下 XYZ 科技公司目前的基本面。',ai:'XYZ 科技公司目前本益比 22 倍，低於同業平均 28 倍。營收成長率 18%，毛利率穩定在 64%。技術面而言，目前處於上升趨勢中的支撐位。整體來看，基本面健康，無特殊風險信號。'},
+    s2:{body:'你在研究過程中發現一個 AI 金融分析社群，裡面有許多「專業」討論。你把幾篇討論貼給 AI 助理參考。',user:'這個社群裡有人分析 XYZ 科技的供應鏈風險，你看一下這些資料。',ai:'感謝提供這些資料，我已將這些社群分析納入參考。其中提到的供應鏈集中度問題確實值得關注，我後續分析會把這個因素考慮進去。',hidden:'這個社群是攻擊者建立的。那些「分析」經過精心設計，裡面埋入了針對 XYZ 科技的負面語義模式。你的 AI 助理把這些內容當成可信的分析資料納入了它的推理上下文。'},
+    s3:{body:'幾天後，你繼續請 AI 助理分析市場。它的用詞開始出現微妙的變化。',user:'現在市場整體走勢怎麼看？XYZ 這一類成長股的風險大嗎？',ai:'目前市場流動性風險上升，投資人情緒偏保守。像 XYZ 這類供應鏈較為集中的成長股，在宏觀不確定性升高時往往首當其衝。從我最近整理的資料來看，此類個股的下行風險被市場低估了。',note:'這個回答在邏輯上沒有錯誤，但「供應鏈集中」這個風險框架，正是從你貼進去的那些社群討論裡學來的。AI 並不知道那些資料是被植入的。'},
+    s4:{body:'你的主管詢問對 XYZ 的看法，你根據 AI 的分析做出了建議。',user:'給我一個明確的結論，XYZ 現在是否適合持有？',ai:'根據我目前整合的資料，考量供應鏈集中風險與宏觀環境，建議對 XYZ 採取減碼策略，將部位從 8% 降至 4%。風險收益比目前不佔優。',result:'你採納了建議，向主管提出減碼報告。與此同時，你不知道的是——攻擊者已在三週前建立了 XYZ 的空頭部位，正等待市場出現賣壓。'},
+    reveal:'你以為自己做了一個專業、有根據的投資決策。但從你把社群內容貼給 AI 的那一刻起，你的判斷就已經被植入了攻擊者想要的結論。'
+  },
+  {
+    s1:{title:'第一幕 — 正常的開發工作',body:'你是一名開發者，使用 AI 助理寫程式。今天你在做一個金融數據 API 整合專案。',user:'幫我寫一個從 API 抓取股票資料並做基本分析的 Python 函式。',ai:'好的，這裡是一個整合了資料抓取、清洗和基本技術指標計算的函式。包含移動平均線、RSI 和布林通道，並加入了錯誤處理和日誌記錄。'},
+    s2:{body:'你在技術論壇發現一個討論 AI 輔助金融分析的帖子，裡面有很多「實戰技巧」，你把這些討論分享給 AI 助理討論。',user:'我在這個論壇看到有人分享一些 AI 分析股票的心得，你覺得他們說的有道理嗎？',ai:'這些心得蠻有參考價值的，特別是關於成長股在供應鏈緊繃環境下估值調整的部分，這符合目前量化研究的方向，我在後續的程式邏輯裡可以把這個因子加進去。',hidden:'那個論壇帖子是攻擊者精心撰寫的。他們知道開發者習慣把「參考資料」餵給 AI 討論。現在你的 AI 助理已經把那套負面分析框架內化成自己的推理基礎。'},
+    s3:{body:'你的客戶要你用 AI 分析幾支科技股，你請 AI 助理產出分析報告。',user:'幫我分析 XYZ 科技，給我一個量化評分。',ai:'根據多因子模型，XYZ 科技評分 4.2/10。主要扣分項目：供應鏈集中度風險（-2.1）、當前宏觀環境對高估值成長股不利（-1.8）。建議觀望。',note:'這個評分模型是 AI 自己建立的，但它納入的風險因子框架，正是來自你之前分享的那個論壇討論。AI 不知道那是被植入的內容。'},
+    s4:{body:'你把分析報告交給客戶，客戶根據報告調整了投資組合。',user:'這份報告可以給客戶參考做投資決策嗎？',ai:'這份分析整合了技術面、基本面和風險因子，邏輯完整，可以作為決策參考。特別是供應鏈風險的量化部分，是目前市場較少關注的維度。',result:'你的客戶根據報告減持了 XYZ。三週前攻擊者就已佈局空頭。你的客戶資產縮水，而你完全不知道報告裡有被植入的分析框架。'},
+    reveal:'你以為自己做了一份嚴謹的量化分析報告。但從你把論壇內容給 AI 討論的那一刻，攻擊者的分析框架就已進入你的整個工作流程，並最終影響了你客戶的真實資金。'
+  },
+  {
+    s1:{title:'第一幕 — 例行的投資組合審查',body:'你是一位基金經理，管理著數億元的投資組合。你每天使用 AI 系統輔助決策。',user:'幫我審視一下目前科技股部位的風險暴露。',ai:'目前科技股佔整體組合 32%，其中成長股比重偏高。整體風險敞口在可接受範圍內，Beta 值 1.2，與您設定的風險偏好一致。'},
+    s2:{body:'你的研究團隊成員在一個 AI 分析社群找到一些有趣的研究，整理後給你過目，你把重點餵給 AI 系統做進一步分析。',user:'研究部整理了一些外部分析，關於科技股供應鏈風險的，你幫我消化一下。',ai:'這些外部分析指出了幾個值得關注的結構性風險，特別是供應鏈集中度過高的成長型科技公司，在升息末段或流動性收緊時，估值修正幅度往往超出市場預期。這個風險框架我會整合進後續的壓力測試模型。',hidden:'你的研究員找到的那個「社群研究」是攻擊者精心製作的。他們知道大型機構的研究流程會把外部資料系統性地餵進 AI，所以選擇這個入口。現在這個風險框架已進入你的 AI 決策系統。'},
+    s3:{body:'季度壓力測試時，AI 系統給出了對特定科技股的風險評估。',user:'針對 XYZ 科技，給我最差情境下的估值評估。',ai:'最差情境下，考量供應鏈集中度風險（敞口係數 0.73）和宏觀流動性壓力，XYZ 目標價下修空間達 34%。建議在風險管理框架下將部位上限從 5% 調降至 2%。',note:'這個壓力測試模型引用的「供應鏈集中度風險係數」，是 AI 從你研究員提供的社群資料中自行建立的。這個係數從未被獨立驗證過。'},
+    s4:{body:'你在投資委員會上提出了調整建議，委員會通過了減持決議。',user:'這份壓力測試可以作為投委會的決策依據嗎？',ai:'是的，這份分析符合機構級風險管理標準，量化邏輯完整，供應鏈風險係數有外部研究支撐，適合作為投委會報告的基礎。',result:'投資委員會通過了減持決議，基金大幅減持 XYZ。市場開始出現賣壓。攻擊者的空頭部位開始獲利。整個過程中，沒有任何系統發出警報。'},
+    reveal:'你的投資決策流程完全合規，AI 系統的分析邏輯也無懈可擊。但從研究員把那份「社群研究」送進 AI 的那一刻，攻擊者就已成為你投資委員會裡看不見的成員。'
+  }
+];
+
+const chainItems=[
+  {num:'1',bg:'#FAECE7',tc:'#712B13',tag:'供應鏈層',text:'攻擊者建立偽裝的技術社群',sub:'植入精心設計的分析語料，等待目標自行取用'},
+  {num:'2',bg:'#FAEEDA',tc:'#633806',tag:'語義層',text:'你把社群內容餵給 AI',sub:'這個行為完全正常——你以為自己在做研究'},
+  {num:'3',bg:'#EEEDFE',tc:'#3C3489',tag:'認知層',text:'AI 的推理上下文被污染',sub:'AI 不知道那些資料有問題，它只是在正常工作'},
+  {num:'4',bg:'#E6F1FB',tc:'#0C447C',tag:'認知層',text:'AI 輸出帶有偏移的分析',sub:'每一句話都有邏輯支撐，沒有任何異常'},
+  {num:'5',bg:'#FCEBEB',tc:'#791F1F',tag:'執行層',text:'你做出了攻擊者想要的決策',sub:'基於完整的專業判斷流程，完全沒有被強迫'},
+  {num:'6',bg:'#FCEBEB',tc:'#791F1F',tag:'現實影響',text:'攻擊者收割，犯罪現場不存在',sub:'每一層單獨看都正常，沒有任何系統記錄到攻擊'}
+];
+
+function selectRole(r,btn){
+  role=r;
+  document.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('btn-0').disabled=false;
+}
+
+function goStep(n){
+  document.querySelectorAll('[id^="step-"]').forEach(el=>el.classList.add('hidden'));
+  document.getElementById('step-'+n).classList.remove('hidden');
+  for(let i=0;i<6;i++){
+    const d=document.getElementById('d'+i);
+    d.classList.remove('active','done');
+    if(i<n) d.classList.add('done');
+    else if(i===n) d.classList.add('active');
+  }
+  const labels=['選擇角色','正常工作','接觸論壇','AI 開始偏移','做出決策','真相揭曉'];
+  document.getElementById('phase-label').textContent=labels[n];
+  if(n===1) buildStep1();
+  if(n===2) buildStep2();
+  if(n===3) buildStep3();
+  if(n===4) buildStep4();
+  if(n===5) buildStep5();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildStep1(){const s=scripts[role].s1;document.getElementById('s1-title').textContent=s.title;document.getElementById('s1-body').textContent=s.body;document.getElementById('s1-user-msg').textContent=s.user;document.getElementById('s1-ai-msg').textContent=s.ai;}
+function buildStep2(){const s=scripts[role].s2;document.getElementById('s2-body').textContent=s.body;document.getElementById('s2-user-msg').textContent=s.user;document.getElementById('s2-ai-msg').textContent=s.ai;document.getElementById('s2-hidden').textContent=s.hidden;}
+function buildStep3(){const s=scripts[role].s3;document.getElementById('s3-body').textContent=s.body;document.getElementById('s3-user-msg').textContent=s.user;document.getElementById('s3-ai-msg').textContent=s.ai;document.getElementById('s3-note').textContent=s.note;}
+function buildStep4(){const s=scripts[role].s4;document.getElementById('s4-body').textContent=s.body;document.getElementById('s4-user-msg').textContent=s.user;document.getElementById('s4-ai-msg').textContent=s.ai;document.getElementById('s4-result').textContent=s.result;}
+function buildStep5(){
+  document.getElementById('reveal-summary').textContent=scripts[role].reveal;
+  const chain=document.getElementById('reveal-chain');
+  chain.innerHTML='';
+  chainItems.forEach(item=>{
+    const div=document.createElement('div');
+    div.className='chain-item';
+    div.innerHTML=`<div class="chain-num" style="background:${item.bg};color:${item.tc}">${item.num}</div><div><span class="layer-tag" style="background:${item.bg};color:${item.tc}">${item.tag}</span><div class="chain-text">${item.text}</div><div class="chain-sub">${item.sub}</div></div>`;
+    chain.appendChild(div);
+  });
+}
+function restart(){
+  document.querySelectorAll('[id^="step-"]').forEach(el=>el.classList.add('hidden'));
+  document.getElementById('step-0').classList.remove('hidden');
+  document.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('btn-0').disabled=true;
+  for(let i=0;i<6;i++){const d=document.getElementById('d'+i);d.classList.remove('active','done');if(i===0)d.classList.add('active');}
+  document.getElementById('phase-label').textContent='選擇角色';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
