@@ -192,3 +192,5 @@ Banqiao, New Taipei City, Taiwan
 
 - Zenodo: [zenodo.org/records/19974367](https://doi.org/10.5281/zenodo.19974367)
 - arXiv: Submission pending (endorsement code: YKCPZG)
+## Community Discussion
+   → [Open Questions & Peer Review](DISCUSSION.md)
