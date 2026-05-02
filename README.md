@@ -114,7 +114,7 @@ This research is published for **defensive and academic purposes only**. The att
 
 **WeiMing Yu**  
 Information Systems Engineer | ERP & AI Security Researcher  
-Banqiao, New Taipei City, Taiwan  
+Taiwan  
 
 - Zenodo: [zenodo.org/records/19974367](https://doi.org/10.5281/zenodo.19974367)
 - arXiv: Submission pending (endorsement in progress)
