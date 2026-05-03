@@ -72,11 +72,9 @@
 
 
 ##⚠️ 免責聲明 (Disclaimer)
-本研究僅用於防禦性研究與學術探討。在 Agentic Kill Chain 成為現實金融災難前，我們必須先學會如何預見它[cite: 3]。
+本研究僅用於防禦性研究與學術探討。在 Agentic Kill Chain 成為現實金融災難前，我們必須先學會如何預見它
 
-Author: WeiMing Yu[cite: 3]
-Information Systems Engineer | AI Security Researcher
-Banqiao, New Taipei City, Taiwan[cite: 3]
+
 # Cognitive Layer Poisoning via Multi-Agent Interaction (CLPMAI)
 
  **A Novel Attack Vector Against AI-Assisted Financial Markets**
