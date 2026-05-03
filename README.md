@@ -54,7 +54,7 @@
 
 ---
 
-## 🤝 徵求技術協作 (Call for Collaboration)
+🤝 徵求技術協作 (Call for Collaboration)
 
 本研究目前已完成威脅建模與學術論證，誠徵以下領域專家共同開發技術 PoC：
 - **AI 安全工程師**：實作多智能體環境下的認知偏移監控 (OCM)[cite: 1]。
