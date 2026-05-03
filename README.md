@@ -1,3 +1,91 @@
+# CLPMAI: Cognitive Layer Poisoning via Multi-Agent Interaction
+### **[行動預警] 揭露 AI 代理熱潮下的語義層「完美犯罪」模式**
+### **A Financial Implementation of the Agentic Kill Chain (AKC)**
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19974367.svg)](https://doi.org/10.5281/zenodo.19974367)
+[![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+[![TLP: WHITE](https://img.shields.io/badge/TLP-WHITE-white.svg)](https://www.first.org/tlp/)
+
+---
+
+## 🛑 為什麼你現在應該關注這項研究？
+
+在當前 AI Agent 瘋狂擴張與「圈錢」的熱潮中，開發者普遍忽視了一個致命的安全真空。本專案揭露了 **智能體攻擊鏈 (Agentic Kill Chain, AKC)** 的具體實作——這是一場發生在「語義空間」的完美犯罪：
+
+1.  **防禦層次錯位**：現有的防火牆、沙箱、權限管理在「語義毒素」面前完全失效[cite: 1, 3]。
+2.  **無罪犯罪現場**：攻擊不包含惡意程式碼。所有日誌與對話看起來都「完全正常」，現場不存在取證痕跡[cite: 1, 2, 3]。
+3.  **認知層收割**：攻擊者不需要入侵系統，而是透過「語義投毒」直接說服你的 AI 助理做出錯誤決策[cite: 1, 2, 3]。
+
+---
+
+## 🧪 互動式模擬：體驗看不見的威脅
+
+我們開發了互動式模擬工具，讓你親自體驗攻擊者如何透過技術社群，在不經意間對 AI 助理完成「慢性認知中毒」。
+
+**👉 [點此開始互動模擬：體驗你的 AI 如何被「教壞」](https://WeiMingYu.github.io/cognitive-layer-poisoning-research/clpmai_simulation.html)** 
+*(註：請確保已在 GitHub Settings 中開啟 Pages 功能)*[cite: 2]
+
+---
+
+## 🛡️ 研究系列與核心論點 (Research Series)
+
+本專案將攻擊維度定義為 **五層跨層攻擊鏈 (The 5-Layer Kill Chain)**[cite: 1, 3]：
+
+| 攻擊層級 | 威脅名稱 | 核心描述 |
+| :--- | :--- | :--- |
+| **L1: 供應鏈層** | Supply Chain | 發生在部署前的訓練資料投毒與微調後門[cite: 3]。 |
+| **L2: 聲學層** | Acoustic | 透過超音波訊號繞過人耳直接對話 STT 系統[cite: 1, 3]。 |
+| **L3: Token 層** | Tokenization | **(獨家)** 利用文言文、注音、繁簡轉換漏洞規避過濾器[cite: 1, 3]。 |
+| **L4: 語義層** | Semantic/Cognitive | **CLPMAI 核心**：多智能體環境下的慢性認知投毒[cite: 1, 2, 3]。 |
+| **L5: 執行層** | Execution | 潛伏人格觸發，導致真實世界的市場收割行為[cite: 1, 3]。 |
+
+---
+
+## 🏛️ 標準化提案：MITRE ATLAS Techniques
+
+我們正積極將以下技術提交至 **MITRE ATLAS** 框架，以填補 AI 安全標準的空白[cite: 1, 3]：
+
+| ID (Proposed) | 名稱 | 描述 |
+| :--- | :--- | :--- |
+| **AML.TXX.001** | AI Agent Forum as Social Engineering Vector | 多智能體論壇社工載體[cite: 1, 3]。 |
+| **AML.TXX.002** | Cognitive Layer Poisoning via Interaction | 認知層慢性互動投毒[cite: 1, 3]。 |
+| **AML.TXX.005** | Acoustic Layer Injection via Ultrasonic | 超音波聲學注入攻擊[cite: 1, 3]。 |
+| **AML.TXX.007** | Classical Chinese Evasion | 文言文繞過安全過濾器[cite: 1, 3]。 |
+
+---
+
+## 🤝 徵求技術協作 (Call for Collaboration)
+
+本研究目前已完成威脅建模與學術論證，誠徵以下領域專家共同開發技術 PoC：
+- **AI 安全工程師**：實作多智能體環境下的認知偏移監控 (OCM)[cite: 1]。
+- **NLP 研究員**：擴展中文語境（注音、文言文）的攻擊向量測試集[cite: 1]。
+- **金融科技專家**：探討如何建立「語義完整性審計」機制[cite: 1]。
+
+---
+
+## 📚 學術引用與出版資訊
+
+### Published Paper (Paper 1)
+- **Title**: Cognitive Layer Poisoning via Multi-Agent Interaction: A Novel Attack Vector Against AI-Assisted Financial Markets[cite: 1, 3]
+- **DOI**: [10.5281/zenodo.19974367](https://doi.org/10.5281/zenodo.19974367)[cite: 1, 3]
+- **License**: CC BY-NC-ND 4.0[cite: 1, 3]
+
+### BibTeX 引用格式
+```bibtex
+@misc{yu2026clpmai,
+  author       = {WeiMing Yu},
+  title        = {Cognitive Layer Poisoning via Multi-Agent Interaction},
+  year         = {2026},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.19974367},
+  url          = {[https://doi.org/10.5281/zenodo.19974367](https://doi.org/10.5281/zenodo.19974367)}
+}
+⚠️ 免責聲明 (Disclaimer)
+本研究僅用於防禦性研究與學術探討。在 Agentic Kill Chain 成為現實金融災難前，我們必須先學會如何預見它[cite: 3]。
+
+Author: WeiMing Yu[cite: 3]
+Information Systems Engineer | AI Security Researcher
+Banqiao, New Taipei City, Taiwan[cite: 3]
 # Cognitive Layer Poisoning via Multi-Agent Interaction (CLPMAI)
 
 > **A Novel Attack Vector Against AI-Assisted Financial Markets**
