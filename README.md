@@ -23,7 +23,7 @@
 我們開發了互動式模擬工具，讓你親自體驗攻擊者如何透過技術社群，在不經意間對 AI 助理完成「慢性認知中毒」。
 
 **👉 [點此開始互動模擬：體驗你的 AI 如何被「教壞」](https://WeiMingYu.github.io/cognitive-layer-poisoning-research/clpmai_simulation.html)** 
-*(註：請確保已在 GitHub Settings 中開啟 Pages 功能)*[cite: 2]
+
 
 ---
 
