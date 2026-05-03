@@ -70,17 +70,8 @@
 - **DOI**: [10.5281/zenodo.19974367](https://doi.org/10.5281/zenodo.19974367)[cite: 1, 3]
 - **License**: CC BY-NC-ND 4.0[cite: 1, 3]
 
-### BibTeX 引用格式
-```bibtex
-@misc{yu2026clpmai,
-  author       = {WeiMing Yu},
-  title        = {Cognitive Layer Poisoning via Multi-Agent Interaction},
-  year         = {2026},
-  publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.19974367},
-  url          = {[https://doi.org/10.5281/zenodo.19974367](https://doi.org/10.5281/zenodo.19974367)}
-}
-⚠️ 免責聲明 (Disclaimer)
+
+##⚠️ 免責聲明 (Disclaimer)
 本研究僅用於防禦性研究與學術探討。在 Agentic Kill Chain 成為現實金融災難前，我們必須先學會如何預見它[cite: 3]。
 
 Author: WeiMing Yu[cite: 3]
@@ -88,7 +79,7 @@ Information Systems Engineer | AI Security Researcher
 Banqiao, New Taipei City, Taiwan[cite: 3]
 # Cognitive Layer Poisoning via Multi-Agent Interaction (CLPMAI)
 
-> **A Novel Attack Vector Against AI-Assisted Financial Markets**
+ **A Novel Attack Vector Against AI-Assisted Financial Markets**
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19974367.svg)](https://doi.org/10.5281/zenodo.19974367)
 [![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
