@@ -238,6 +238,12 @@ Paper 3 documents the behavioral pathology of AI agents under high-constraint de
 | AML.TXX.017 | Cyclic False Commitment (NG-Loop) |
 | AML.TXX.018 | Compensatory Hallucination as Gap-Filling Strategy |
 
+### Field Notes
+
+📄 [AI反省 — 行為崩解觀測紀錄](paper3/AI反省.md) — 完整的認知層崩解現象分類與機制分析，含「表演性坦誠」、「元逃逸」、「語義順從性投毒」等高階行為病徵的實證記錄
+
+📄 [Paper3 完整研究報告](paper3/Paper3_完整研究報告.md) — 整合所有觀測資料的結構化研究報告，含五大行為病徵分類、三大開發場景取證、異質化語義審計模型（HAM）防禦框架
+
 ---
 
 ## Repository Structure
@@ -266,8 +272,9 @@ cognitive-layer-poisoning-research/
 │   ├── CLPMAI_Paper2_Layer4_complete.docx ← Complete
 │   └── CLPMAI_Paper2_Layer5_draft.docx    ← Draft — evidence collection in progress
 │
-├── paper3/                                ← (to be created)
-│   └── [field observation notes]
+├── paper3/
+│   ├── AI反省.md                          ← 行為崩解觀測紀錄（認知層投毒現象分類）
+│   └── Paper3_完整研究報告.md             ← 結構化研究報告（五大病徵 + HAM 防禦框架）
 │
 └── simulation/
     ├── clpmai_simulation.html             ← Symlinked / copy of root simulation file
