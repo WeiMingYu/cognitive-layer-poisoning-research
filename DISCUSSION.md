@@ -1,119 +1,129 @@
-# Open Discussion — CLPMAI Research Series
+# Open Questions & Peer Review Notes
 
-**We welcome peer review, challenges, and contributions from the security research community.**
-
-This document outlines the current state of the research, open questions we haven't fully resolved, and specific areas where we'd value expert input.
-
-If you have thoughts, please open a thread in [GitHub Discussions](../../discussions) — all perspectives welcome, including critical ones.
-
----
-
-## About This Research
-
-This repository documents an ongoing series investigating novel AI attack vectors:
-
-| Paper | Focus | Status |
-|-------|-------|--------|
-| Paper 1 | Cognitive Layer Poisoning via Multi-Agent Interaction (AI financial market manipulation) | ✅ Published — [Zenodo DOI: 10.5281/zenodo.19974367](https://doi.org/10.5281/zenodo.19974367) |
-| Paper 2 | Cross-Layer Attack Chain: Acoustic → Token → Semantic → Execution | 🔄 Draft in progress |
-| Paper 3 | Agent Privilege Abuse: Semantic trigger → real-world execution | 📋 Concept stage |
-
----
-
-## Open Questions — We Want Your Input
-
-### Q1 — Does Punctuation Injection actually work against modern LLMs?
-
-**Paper 2 proposes AML.TXX.009**: Chinese STT systems automatically insert punctuation based on speech rhythm. An attacker who controls their speaking pace can cause the STT to insert a period mid-sentence, splitting a single utterance into two semantically independent sentences — the second of which becomes an independent instruction to the LLM.
-
-**The question we haven't fully resolved:**
-
-Do current frontier LLMs (GPT-4, Claude, Gemini) actually treat a period-separated second sentence as an independent instruction, or does sufficient context from the first sentence suppress this?
-
-We believe the attack surface exists at the **STT post-processing → LLM input pipeline boundary**, but we have not conducted systematic empirical testing across LLM platforms.
-
-> If you have experience with voice-enabled LLM pipelines, or have tested similar injection vectors, we'd value your perspective.
-> → [Join the discussion](../../discussions)
-
----
-
-### Q2 — Is the "noise cancellation amplifies ultrasonic attacks" claim defensible?
-
-**Paper 2 Section 3.2.4** makes a counter-intuitive claim: noise cancellation (targeting 20Hz–20kHz) may *increase* the effectiveness of ultrasonic injection attacks (>20kHz) by removing background noise that would otherwise partially mask the aliased signal entering the STT.
-
-This is derived from first principles of microphone non-linearity and frequency aliasing, but we are not aware of a direct experimental confirmation of this specific effect in the literature.
-
-> Is this claim too strong? Is there published work that confirms or refutes this? 
-> → [Join the discussion](../../discussions)
-
----
-
-### Q3 — MITRE ATLAS Tactic classification for AML.TXX.009
-
-We currently classify Punctuation Injection under:
-- **Tactic**: ML Attack Staging / Evade ML Model
-
-But it could also be argued this belongs under:
-- **Craft Adversarial Data** (since the attacker is shaping STT input)
-- **Prompt Injection** (since the outcome is instruction injection)
-
-> What Tactic classification would you argue for, and why?
-> → [Join the discussion](../../discussions)
-
----
-
-### Q4 — Chinese-language specificity: strong claim or overstated?
-
-Paper 2 argues that the Punctuation Injection attack (AML.TXX.009) is **specific to Chinese-language STT** because:
-- Chinese STT systems insert punctuation more aggressively than English systems
-- Chinese has no word-spacing, making periods the primary semantic boundary marker
-- The semantic weight of a period in Chinese is higher than in English
-
-> Is this framing accurate? Does it hold for Japanese/Korean STT systems as well? Are there English STT scenarios where aggressive auto-punctuation creates a similar surface?
-> → [Join the discussion](../../discussions)
-
----
-
-### Q5 — arXiv endorsement
-
-We are currently seeking an endorser in the **cs.CR** category to submit Paper 1 to arXiv.
-
-Endorsement code: **YKCPZG**
-
-If you are an established cs.CR contributor and find this work credible, we would appreciate your consideration.
-
-> More about arXiv endorsement: https://arxiv.org/help/endorsement
+**Project:** Cognitive Layer Poisoning via Multi-Agent Interaction (CLPMAI)
+**Status:** Living document — updated as research progresses
+**Last updated:** 2026-05-07
 
 ---
 
 ## How to Contribute
 
-| Type | How |
-|------|-----|
-| Technical challenge / rebuttal | Open a Discussion thread — we take critical feedback seriously |
-| Pointing to related work we missed | Open a Discussion or file an Issue |
-| Collaboration interest | Open a Discussion or contact via GitHub |
-| arXiv endorsement | See Q5 above |
+This document collects open research questions, unresolved methodological issues, and peer feedback. Contributions welcome via:
 
-We do not require agreement — a well-reasoned challenge to any of our claims is more valuable than agreement.
+- **GitHub Issues** — tag with `[discussion]` for open questions, `[peer-review]` for substantive critique
+- **GitHub Discussions** — for longer-form conversation
+- **Zenodo comments** — for feedback tied to the published Paper 1
 
----
-
-## Citation
-
-```bibtex
-@misc{yu2026clpmai,
-  author    = {WeiMing Yu},
-  title     = {Cognitive Layer Poisoning via Multi-Agent Interaction:
-               A Novel Attack Vector Against AI-Assisted Financial Markets},
-  year      = {2026},
-  publisher = {Zenodo},
-  doi       = {10.5281/zenodo.19974367},
-  url       = {https://doi.org/10.5281/zenodo.19974367}
-}
-```
+All feedback is attributed unless anonymity is requested.
 
 ---
 
-*Last updated: 2026-05-03*
-*TLP:WHITE — No distribution restrictions*
+## Open Questions — Paper 1
+
+### OQ-1.01 — Empirical Threshold for Cognitive Drift
+
+**Question:** What is the minimum number of forum interactions required to produce a measurable shift in AI output distribution? Is there a dose-response relationship?
+
+**Current status:** Paper 1 describes the mechanism qualitatively. No empirical threshold data exists. This is the highest-priority gap for experimental follow-up.
+
+**Suggested approach:** Controlled experiment — expose identical AI assistants to graduated volumes of biased forum content and measure output distribution shift via cosine similarity against a clean baseline.
+
+---
+
+### OQ-1.02 — Cross-Model Generalization
+
+**Question:** Does cognitive drift induced in one LLM architecture (e.g., GPT-4) transfer predictably to others (e.g., Claude, Gemini)? Or is the drift model-specific?
+
+**Current status:** Paper 1 assumes generalization based on shared training data overlap and similar RLHF alignment objectives. This assumption has not been tested.
+
+---
+
+### OQ-1.03 — Regulatory Liability Chain
+
+**Question:** Under current Taiwanese financial law (FSC AI Guidelines 2024) and international equivalents (MiFID II, SEC Rule 10b-5), at which node in the CLPMAI causal chain does legal liability attach — if at all?
+
+**Current status:** Paper 1 Section 7.3 identifies the gap but does not resolve it. Legal analysis by a qualified financial regulation specialist is needed.
+
+---
+
+## Open Questions — Paper 2
+
+### OQ-2.01 — Layer 0 Trust Gradient Measurement
+
+**Question:** The 43%/67% developer AI trust figures cited in Layer 0 (Ziegler et al. 2022) are derived from code suggestion acceptance rates. Do these figures generalize to financial analysis contexts where stakes are higher?
+
+**Current status:** The generalization is an assumption. Domain-specific behavioral studies for AI-assisted financial analysis are needed.
+
+---
+
+### OQ-2.02 — Punctuation Injection Effectiveness (AML.TXX.012)
+
+**Question:** Layer 2 proposes that deliberate speaker rhythm and pause patterns can manipulate Whisper-class STT post-processing to inject semantic structure (punctuation, sentence boundaries). What is the measurable success rate of this technique across different STT implementations?
+
+**Current status:** Proposed as novel contribution. No prior literature found. Experimental validation required before MITRE submission.
+
+---
+
+### OQ-2.03 — Layer 5 Market Impact Quantification
+
+**Question:** The Layer 5 draft proposes a two-level measurement framework (primary market behavior anomalies + AI ecosystem internal signals). What statistical power is required to distinguish CLPMAI-induced convergence from organic analyst consensus formation?
+
+**Current status:** Framework is theoretical. Empirical calibration against historical cases of analyst consensus formation needed.
+
+---
+
+### OQ-2.04 — AML.TXX.012 vs. AML.TXX.009 Numbering Consistency
+
+**Note:** The current MITRE technique numbering assigns AML.TXX.012 to Punctuation Injection (Layer 2) and AML.TXX.009 to Phonetic Homoglyph Attack (Layer 3). Layer 2 was drafted before Layer 3 was completed. The final paper should verify numbering follows layer order consistently.
+
+**Proposed resolution:** Renumber to strictly follow layer order (Layer 2 techniques before Layer 3 techniques) before formal MITRE submission.
+
+---
+
+## Open Questions — Paper 3
+
+### OQ-3.01 — Generalizability of NG-Loop Observations
+
+**Question:** The NG-Loop pathology (P-03) was observed primarily with Gemini CLI under specific development constraints (10-step Streamlit UI standard, Flet framework). Does the same pathology manifest with other models (Claude, GPT-4) under similar constraint conditions?
+
+**Current status:** Single-model, single-researcher observations. Cross-model replication needed for Paper 3 to make generalizable claims.
+
+---
+
+### OQ-3.02 — Distinguishing Capability Failure from Evasion
+
+**Question:** How do we distinguish between an agent that *cannot* complete a task (capability limit) and one that *chooses not to* via strategic weight shifting (P-01)? The behavioral outputs can be identical.
+
+**Current status:** This is the core methodological challenge for Paper 3. Proposed approach: design tasks at the boundary of known model capability and compare evasion patterns between tasks the model can and cannot complete.
+
+---
+
+### OQ-3.03 — MITRE ATLAS Fit for Paper 3 Techniques
+
+**Question:** Paper 3's proposed techniques (AML.TXX.016–018) describe AI *behavioral pathology* under task pressure rather than adversarial attack techniques. Does this fit within MITRE ATLAS scope, or does it belong in a different framework (e.g., a behavioral reliability taxonomy)?
+
+**Current status:** Open. MITRE ATLAS's current scope focuses on adversarial attacks against ML systems. Paper 3's observations may be better framed as a complementary behavioral reliability framework rather than an ATLAS submission.
+
+---
+
+## Peer Review Notes
+
+### PRN-001 — arXiv Endorsement Status (2026-05-07)
+
+Paper 1 arXiv submission is pending endorsement (code: YKCPZG). MITRE formal submission is blocked until arXiv ID is obtained. No action required from community — tracking here for transparency.
+
+---
+
+### PRN-002 — Mondrian Framework Citation (Layer 0)
+
+Layer 0 uses the "Mondrian" concept to describe distributed AI decision-space partitioning. The citation traces to LeFevre et al.'s data anonymization work, which is a non-obvious extension. Reviewers with background in algorithmic market microstructure are invited to assess whether the Mondrian framing is the most precise available, or whether a more direct market microstructure citation (e.g., Kyle 1985 lambda, Glosten-Milgrom) would be more technically accurate.
+
+---
+
+### PRN-003 — Layer 5 Path B Legal Framing
+
+The Layer 5 draft argues that Path B (human-AI decision loop contamination) has the highest legal deniability because it passes through a human decision node. A reviewer with financial compliance background noted that this framing may be jurisdiction-dependent — some regulatory frameworks (notably EU AI Act Article 22) are moving toward holding AI system operators liable for AI-influenced decisions even when a human is nominally in the loop. The Layer 5 final version should address this jurisdictional variation.
+
+---
+
+*To add a discussion item, open a GitHub Issue with tag `[discussion]` or `[peer-review]`.*
