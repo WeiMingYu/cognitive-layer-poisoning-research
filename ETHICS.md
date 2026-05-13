@@ -2,7 +2,7 @@
 
 **Project:** Cognitive Layer Poisoning via Multi-Agent Interaction (CLPMAI)
 **Author:** WeiMing Yu
-**Last updated:** 2026-05-07
+**Last updated:** 2026-05-13
 
 ---
 
@@ -72,7 +72,7 @@ Formal submission will proceed after arXiv endorsement is obtained, per MITRE's 
 
 ## 6. Limitations and Caveats
 
-- **Paper 1 and 2** describe theoretical attack chains. The full five-layer coordinated deployment has not been demonstrated in any real-world environment known to the author.
+- **Paper 1 and 2** describe theoretical attack chains. The full five-layer coordinated deployment has not been demonstrated in any real-world environment known to the author. Note: the Mini Shai-Hulud supply chain attack (CVE-2026-45321, 2026-05-11) independently validates the Layer 1 threat model (supply chain backdoor via CI/CD hijacking), but this is a single-layer real-world case, not a demonstration of the full coordinated chain.
 - **Paper 3** behavioral observations are from a single researcher's development environment and may not generalize across all AI systems or usage contexts.
 - Market impact estimates in Paper 2 Layer 5 are theoretical and have not been empirically validated.
 

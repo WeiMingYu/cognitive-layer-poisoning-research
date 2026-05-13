@@ -2,7 +2,7 @@
 
 **Project:** Cognitive Layer Poisoning via Multi-Agent Interaction (CLPMAI)
 **Status:** Living document — updated as research progresses
-**Last updated:** 2026-05-07
+**Last updated:** 2026-05-13
 
 ---
 
@@ -76,7 +76,7 @@ All feedback is attributed unless anonymity is requested.
 
 **Note:** The current MITRE technique numbering assigns AML.TXX.012 to Punctuation Injection (Layer 2) and AML.TXX.009 to Phonetic Homoglyph Attack (Layer 3). Layer 2 was drafted before Layer 3 was completed. The final paper should verify numbering follows layer order consistently.
 
-**Proposed resolution:** Renumber to strictly follow layer order (Layer 2 techniques before Layer 3 techniques) before formal MITRE submission.
+**Resolution:** Numbering retained as-is (consistent with README and integrated paper). AML.TXX.009 (Phonetic Homoglyph, Layer 3) and AML.TXX.012 (Punctuation Injection, Layer 2) reflect the order in which layers were drafted, not strict layer sequence. This is acceptable as MITRE assigns final IDs upon submission. ✅ Closed.
 
 ---
 
@@ -123,6 +123,20 @@ Layer 0 uses the "Mondrian" concept to describe distributed AI decision-space pa
 ### PRN-003 — Layer 5 Path B Legal Framing
 
 The Layer 5 draft argues that Path B (human-AI decision loop contamination) has the highest legal deniability because it passes through a human decision node. A reviewer with financial compliance background noted that this framing may be jurisdiction-dependent — some regulatory frameworks (notably EU AI Act Article 22) are moving toward holding AI system operators liable for AI-influenced decisions even when a human is nominally in the loop. The Layer 5 final version should address this jurisdictional variation.
+
+---
+
+---
+
+### PRN-004 — Paper 2 Completion Status (2026-05-13)
+
+Paper 2 integrated versions (Traditional Chinese v0.9, English v0.9) are complete as of 2026-05-13. Individual layer drafts preserved in `paper2/` for reference. OQ-2.01 through OQ-2.03 remain open for experimental follow-up; OQ-2.04 is closed (see above).
+
+---
+
+### PRN-005 — Mini Shai-Hulud as Layer 1 Real-World Validation (2026-05-13)
+
+CVE-2026-45321 (Mini Shai-Hulud, 2026-05-11, CVSS 9.6) provides the first documented real-world validation of the Paper 2 §4.2 threat model: malicious packages passing cryptographic signature verification via CI/CD pipeline hijacking. This does not resolve OQ-2.01–2.03 (which require controlled experiments) but confirms that the Layer 1 attack surface is not merely theoretical. The integrated paper (§4.2) includes this as a supporting case.
 
 ---
 
