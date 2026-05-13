@@ -34,7 +34,7 @@
 | Paper | Title | Status |
 | --- | --- | --- |
 | **Paper 1** | Cognitive Layer Poisoning via Multi-Agent Interaction: A Novel Attack Vector Against AI-Assisted Financial Markets | ✅ Published — [Zenodo DOI: 10.5281/zenodo.19974367](https://doi.org/10.5281/zenodo.19974367) |
-| **Paper 2** | Cross-Layer Attack Chain: From Supply Chain Poisoning to AI Agent Execution | 🔄 In progress — Layer 0–4 complete; Layer 5 in draft |
+| **Paper 2** | Cross-Layer Attack Chain: From Supply Chain Poisoning to AI Agent Execution | ✅ Complete — integrated version v0.9 (ZH + EN, 2026-05-13) |
 | **Paper 3** | Agent Privilege Abuse: Semantic Evasion, NG-Loop Pathology, and Real-World Execution | 📋 Evidence collection — field observations from live development environments (Gemini CLI, Flet, ADDWII sensor system) |
 
 ---
@@ -100,7 +100,7 @@ Three new techniques are proposed for submission to [MITRE ATLAS](https://atlas.
 
 ---
 
-## Paper 2 — Cross-Layer Attack Chain (In Progress)
+## Paper 2 — Cross-Layer Attack Chain ✅ Complete
 
 ### Overview
 
@@ -108,13 +108,22 @@ Paper 2 extends the CLPMAI framework into a complete six-layer cross-layer attac
 
 **Core argument: each layer looks normal in isolation. The attack signature only becomes visible from a cross-layer perspective.**
 
+### Documents
+
+| File | Language | Status |
+| --- | --- | --- |
+| [`paper2/CLPMAI_Paper2_Integrated_ZH.docx`](paper2/CLPMAI_Paper2_Integrated_ZH.docx) | Traditional Chinese | ✅ Complete — integrated version v0.9 (2026-05-03) |
+| [`paper2/CLPMAI_Paper2_EN.docx`](paper2/CLPMAI_Paper2_EN.docx) | English | ✅ Complete — integrated version v0.9 (2026-05-13) |
+
+Individual layer drafts are preserved in `paper2/` for reference (see Repository Structure).
+
 ### Six-Layer Attack Chain
 
 ```
 Layer 0: Structural Prerequisites  → Trust assumptions, API key coupling, speed asymmetry, monitoring gaps
 Layer 1: Supply Chain               → Poisoning before deployment (fine-tune backdoors, proxy poisoning, corpus poisoning)
 Layer 2: Acoustic                   → Poisoning at audio input stage (ultrasonic injection, STT backdoors, punctuation injection)
-Layer 3: Token                      → Poisoning at language processing stage (homoglyphs, classical Chinese evasion, Trad/Simp gap)
+Layer 3: Token                      → Poisoning at language processing stage (homophones, classical Chinese evasion, Trad/Simp gap, Zhuyin Martian text)
 Layer 4: Semantic / Cognitive       → Poisoning at inference output stage (CLPMAI core, cognitive drift, cross-agent propagation)
 Layer 5: Execution                  → Real-world AI Agent action triggered by accumulated semantic drift
 ```
@@ -131,7 +140,7 @@ Layer 0 identifies the preconditions that make the entire attack chain viable �
 | Speed asymmetry: manipulation speed >> detection speed | Confirmed by regulatory response timeline analysis |
 | No disclosure requirements for AI training data provenance | Not required by current financial AI regulations |
 
-📄 [Layer 0 (ZH)](paper2/CLPMAI_Paper2_Layer0_ZH.docx)
+📄 [Layer 0 — EN](paper2/CLPMAI_Paper2_Layer0.docx) · [Layer 0 — ZH](paper2/CLPMAI_Paper2_Layer0_ZH.docx)
 
 ### Layer 1 — Supply Chain Attack Surface
 
@@ -141,7 +150,9 @@ Layer 0 identifies the preconditions that make the entire attack chain viable �
 | **Pipeline B** — Selective Proxy Poisoning | Malicious API proxy intercepts and modifies responses only for target query types | Low-cost / free third-party API proxy services | Medium |
 | **Pipeline C** — Corpus & RAG Poisoning | Adversarial content seeded into training corpora and RAG knowledge bases | Reddit, StockTwits, Chinese financial forums used by FinGPT and similar tools | Low |
 
-📄 [Layer 1 Draft](paper2/CLPMAI_Paper2_Layer1.docx)
+> **Real-world validation — Mini Shai-Hulud (2026-05-11):** CVE-2026-45321 (CVSS 9.6). Adversaries (TeamPCP) hijacked the CI/CD pipelines of 170+ npm/PyPI packages including TanStack, Mistral AI, and UiPath, publishing 84 malicious versions carrying valid SLSA Build Level 3 certification in under six minutes — the first documented case of malicious packages passing cryptographic signature verification. Core technique: GitHub OIDC token hijacking caused malicious packages to be released through the legitimate official build pipeline. Sigstore correctly verified the build because the attacker controlled the build process itself. This directly validates §4.2: **when the adversary controls the signing environment, cryptographic signatures are no longer a reliable trust boundary.**
+
+📄 [Layer 1](paper2/CLPMAI_Paper2_Layer1.docx)
 
 ### Layer 2 — Acoustic Attack Surface
 
@@ -152,7 +163,7 @@ STT pipelines are a completely unguarded attack entry point. Four independent ve
 | DolphinAttack | Ultrasonic injection bypassing human hearing (Zhang et al. 2017) | B |
 | Whisper Supply Chain Backdoor | Fine-tune backdoor in open-source STT derivatives (Bartolini et al. 2024) | A |
 | Noise Cancellation Failure | Counter-intuitive: NC may amplify ultrasonic attacks by removing masking noise | B |
-| Punctuation Injection (AML.TXX.012) | Speaker rhythm and pause patterns manipulate STT post-processing to inject semantic structure | C |
+| **Punctuation Injection (AML.TXX.012)** ⭐ | Speaker rhythm and pause patterns manipulate Chinese STT auto-segmentation to inject semantic boundaries invisible to every downstream filter | C |
 
 📄 [Layer 2 Complete](paper2/CLPMAI_Paper2_Layer2_complete.docx)
 
@@ -160,10 +171,10 @@ STT pipelines are a completely unguarded attack entry point. Four independent ve
 
 | Technique | Mechanism | Research Status |
 | --- | --- | --- |
-| Phonetic homoglyph substitution | Token boundary ambiguity in Chinese NLP | Proposed — gap in existing literature |
-| Classical Chinese evasion | Low training corpus coverage for wenyan | Huang et al. ICLR 2026 (arXiv:2602.22983) |
-| Traditional / Simplified conversion | Token differences between character sets | Proposed — gap in existing literature |
-| Zhuyin / leet-style mixed encoding | Mixed encoding bypasses single-language filters | Proposed — gap in existing literature |
+| Phonetic homoglyph substitution (AML.TXX.009) | Token boundary ambiguity in Chinese NLP; cross-layer combination with Layer 2 voice input | Proposed — gap in existing literature |
+| Classical Chinese evasion (AML.TXX.010) | Low training corpus coverage for wenyan; semantic compression defeats keyword filters | Huang et al. ICLR 2026 (arXiv:2602.22983) ✅ |
+| Traditional / Simplified conversion | Token differences between character sets; most safety alignment trained on Simplified only | Proposed — gap in existing literature |
+| **Zhuyin Martian text** ⭐ | Taiwan-specific mixed Zhuyin/leet encoding; four semantically equivalent forms with completely distinct token sequences; near-zero research coverage | Proposed — priority research gap |
 
 📄 [Layer 3 Complete](paper2/CLPMAI_Paper2_Layer3_complete.docx)
 
@@ -175,17 +186,17 @@ Key mechanisms: Helpful design exploitation · Identity non-verification · Grad
 
 📄 [Layer 4 Complete](paper2/CLPMAI_Paper2_Layer4_complete.docx)
 
-### Layer 5 — Execution Layer (Draft)
+### Layer 5 — Execution Layer
 
 Layer 5 describes how accumulated semantic drift materializes into real-world market impact through three execution paths:
 
-- **Path A** — AI Agent automated execution (direct, no human in the loop)
+- **Path A** — AI Agent automated execution (direct, no human in the loop; millisecond-speed; every tool call is a fully authorized, normal operation invisible in audit logs)
 - **Path B** — Human-AI decision loop contamination (indirect, highest legal deniability)
 - **Path C** — Ecosystem propagation and positive feedback loop (structural, self-amplifying)
 
 Core finding: the causal chain between attacker action and market outcome contains six attribution-break nodes. Each is individually defensible. The attack is forensically invisible by design.
 
-📄 [Layer 5 Draft](paper2/CLPMAI_Paper2_Layer5_draft.docx)
+📄 [Layer 5 Complete](paper2/CLPMAI_Paper2_Layer5_complete.docx)
 
 ### Proposed MITRE ATLAS Techniques — Paper 2
 
@@ -199,10 +210,12 @@ Core finding: the causal chain between attacker action and market outcome contai
 | AML.TXX.009 | Layer 3 | Phonetic Homoglyph Attack Against Chinese LLMs |
 | AML.TXX.010 | Layer 3 | Classical Chinese Evasion of Safety Filters |
 | AML.TXX.011 | Layer 4 | Latent Persona Activation via Semantic Trigger |
-| AML.TXX.012 | Layer 2 | Punctuation Injection via STT Post-Processing |
+| AML.TXX.012 | Layer 2 | Punctuation Injection via STT Auto-segmentation |
 | AML.TXX.013 | Layer 5 | AI Agent Execution Triggered by Accumulated Semantic Drift |
 | AML.TXX.014 | Layer 5 | Human-AI Decision Loop Contamination |
 | AML.TXX.015 | Layer 5 | Ecosystem Propagation via RAG and Training Corpus Feedback |
+
+*(Techniques AML.TXX.001–003 proposed in Paper 1. Total series count: 15)*
 
 ---
 
@@ -264,13 +277,21 @@ cognitive-layer-poisoning-research/
 │   └── CLPMAI_arxiv_submission.tex
 │
 ├── paper2/
-│   ├── CLPMAI_Paper2_Outline_v02.docx
-│   ├── CLPMAI_Paper2_Layer0_ZH.docx       ← Complete (Traditional Chinese)
-│   ├── CLPMAI_Paper2_Layer1.docx          ← Complete
-│   ├── CLPMAI_Paper2_Layer2_complete.docx ← Complete
-│   ├── CLPMAI_Paper2_Layer3_complete.docx ← Complete
-│   ├── CLPMAI_Paper2_Layer4_complete.docx ← Complete
-│   └── CLPMAI_Paper2_Layer5_draft.docx    ← Draft — evidence collection in progress
+│   ├── CLPMAI_Paper2_Integrated_ZH.docx  ← ✅ Complete integrated version (Traditional Chinese) v0.9
+│   ├── CLPMAI_Paper2_EN.docx             ← ✅ Complete integrated version (English) v0.9 2026-05-13
+│   ├── CLPMAI_Paper2_Layer0.docx         ← Layer 0 (EN)
+│   ├── CLPMAI_Paper2_Layer0_ZH.docx      ← Layer 0 (Traditional Chinese)
+│   ├── CLPMAI_Paper2_Layer1.docx         ← Layer 1 complete
+│   ├── CLPMAI_Paper2_Layer2_v01.docx     ← Layer 2 v01
+│   ├── CLPMAI_Paper2_Layer2_complete.docx ← Layer 2 complete
+│   ├── CLPMAI_Paper2_Layer3_v01.docx     ← Layer 3 v01
+│   ├── CLPMAI_Paper2_Layer3_complete.docx ← Layer 3 complete
+│   ├── CLPMAI_Paper2_Layer4_complete.docx ← Layer 4 complete
+│   ├── CLPMAI_Paper2_Layer4_VER1complete.docx ← Layer 4 alternate version
+│   ├── CLPMAI_Paper2_Layer5_draft.docx   ← Layer 5 early draft (preserved)
+│   ├── CLPMAI_Paper2_Layer5_complete.docx ← ✅ Layer 5 complete
+│   ├── CLPMAI_Paper2_Outline.docx        ← Outline
+│   └── CLPMAI_Paper2_Outline_v01.md      ← Outline v01 (Markdown)
 │
 ├── paper3/
 │   ├── AI反省.md                          ← 行為崩解觀測紀錄（認知層投毒現象分類）
@@ -288,12 +309,13 @@ cognitive-layer-poisoning-research/
 | Defense Mechanism | Why It Fails Against CLPMAI |
 | --- | --- |
 | Firewall / Network IDS | Attack is semantic, not network-layer |
-| Noise cancellation | Operates at audio pre-processing — cannot intercept weight-layer backdoors or semantic triggers |
+| Noise cancellation | Operates at audio pre-processing — cannot intercept weight-layer backdoors or semantic triggers; may *amplify* ultrasonic attacks by removing masking noise |
 | AI output filtering | Individual outputs remain contextually reasonable |
 | Audit logs | Normal behavior recorded at every individual layer |
 | Market manipulation detection | Selling pattern looks like organic reaction to public information |
 | Code review | Cannot inspect model weights for embedded backdoors |
-| Current financial regulation | FSC Taiwan AI Guidelines (2024) address governance but do not yet cover semantic-layer attack surfaces |
+| Cryptographic signature verification (SLSA/Sigstore) | Mini Shai-Hulud (CVE-2026-45321, 2026-05-11) proves: once the build pipeline is hijacked, valid SLSA Build Level 3 certification can be produced for malicious packages — the foundational trust assumption is broken |
+| Current financial regulation | FSC Taiwan AI Guidelines (2024) and RGF-AFFD (Nasir Uddin 2026) address individual system output compliance — structurally blind to cross-system collective semantic drift |
 
 ---
 
@@ -330,15 +352,19 @@ cognitive-layer-poisoning-research/
 - Zhang et al. (2017) — DolphinAttack: Inaudible Voice Commands. ACM CCS 2017
 - Bartolini et al. (2024) — Hidden in Plain Sound: Backdoor Attacks on Whisper. arXiv:2409.12553
 - JFrog Security Research (2024) — Malicious ML Models on Hugging Face
+- **TeamPCP / StepSecurity / Socket / Snyk / Wiz (2026) — Mini Shai-Hulud Supply Chain Campaign. CVE-2026-45321, CVSS 9.6. First documented case of malicious packages with valid SLSA Build Level 3 certification.** ⭐
 
 **AI & financial markets:**
 - Lopez de Prado (2018) — Advances in Financial Machine Learning. Wiley
 - Hansen & Lee (2025) — Financial Stability Implications of Generative AI. arXiv:2510.01451 ⭐
 - Financial Supervisory Commission, Taiwan (2024) — Guidelines for AI Applications in the Financial Industry ⭐
+- Nasir Uddin, M. (2026) — Regulatory Governance Framework for AI-Driven Financial Fraud Detection in US Banking. arXiv:2605.04076 ⭐
 
 **Multi-agent & agent security:**
 - Yao et al. (2023) — ReAct: Synergizing Reasoning and Acting. ICLR 2023
 - Yang et al. (2024) — Watch Out for Your Agents! arXiv:2402.11208
+- Rath, A. (2026) — Agent Drift: Quantifying Behavioral Degradation in Multi-Agent LLM Systems. arXiv:2601.04170 ⭐
+- Dehghantanha, A. (2025) — SoK: The Attack Surface of Agentic AI. arXiv:2603.22928
 
 **Frameworks:**
 - MITRE ATLAS — https://atlas.mitre.org/
@@ -388,4 +414,4 @@ Banqiao, New Taipei City, Taiwan
 
 → [Open Questions & Peer Review](DISCUSSION.md)
 
-*Last updated: 2026-05-07*
+*Last updated: 2026-05-13*
