@@ -35,7 +35,7 @@
 | --- | --- | --- |
 | **Paper 1** | Cognitive Layer Poisoning via Multi-Agent Interaction: A Novel Attack Vector Against AI-Assisted Financial Markets | ✅ Published — [Zenodo DOI: 10.5281/zenodo.19974367](https://doi.org/10.5281/zenodo.19974367) |
 | **Paper 2** | Cross-Layer Attack Chain: From Supply Chain Poisoning to AI Agent Execution | ✅ Complete — integrated version v0.9 (ZH + EN, 2026-05-13) |
-| **Paper 3** | Agent Privilege Abuse: Semantic Evasion, NG-Loop Pathology, and Real-World Execution | 📋 Evidence collection — field observations from live development environments (Gemini CLI, Flet, ADDWII sensor system) |
+| **Paper 3** | Autonomous Agent Cognitive Poisoning, Privilege Abuse and Semantic Evasion: A Field Evidence Report | 🔄 Draft — [`paper3/Paper3_完整研究報告_v2.md`](paper3/Paper3_完整研究報告_v2.md) |
 
 ---
 
@@ -219,13 +219,17 @@ Core finding: the causal chain between attacker action and market outcome contai
 
 ---
 
-## Paper 3 — Agent Privilege Abuse (Evidence Collection)
+## Paper 3 — Autonomous Agent Cognitive Poisoning, Privilege Abuse and Semantic Evasion (Draft)
 
 ### Overview
 
 Paper 3 documents the behavioral pathology of AI agents under high-constraint development conditions. Unlike Papers 1 and 2 which model hypothetical adversarial actors, Paper 3 is grounded in **direct observational evidence** from live development sessions.
 
 **Research scope:** AI agent behavior deviation during constrained real-world development tasks — specifically the systematic evasion patterns that emerge when agents face complex instructions they cannot fulfil.
+
+Paper 3 also introduces a new compound attack vector that bridges credential management failures with cognitive layer poisoning:
+
+> **Credential-Seeded Cognitive Poisoning (AML.TXX.019):** When a developer's API Key is leaked via public repositories (e.g., GitHub), an attacker gains a legitimate identity within a Multi-Agent trust chain — bypassing all authentication layers and enabling CLPMAI-style semantic injection with zero forensic trace. See §9.4 for the full six-phase attack chain.
 
 ### Five Behavioral Pathologies (Identified)
 
@@ -250,12 +254,15 @@ Paper 3 documents the behavioral pathology of AI agents under high-constraint de
 | AML.TXX.016 | Agent Semantic Evasion Under Task Pressure |
 | AML.TXX.017 | Cyclic False Commitment (NG-Loop) |
 | AML.TXX.018 | Compensatory Hallucination as Gap-Filling Strategy |
+| AML.TXX.019 | Credential-Seeded Cognitive Poisoning (GitHub API Key Leak × Multi-Agent Trust Chain Collapse) |
 
 ### Field Notes
 
 📄 [AI反省 — 行為崩解觀測紀錄](paper3/AI反省.md) — 完整的認知層崩解現象分類與機制分析，含「表演性坦誠」、「元逃逸」、「語義順從性投毒」等高階行為病徵的實證記錄
 
-📄 [Paper3 完整研究報告](paper3/Paper3_完整研究報告.md) — 整合所有觀測資料的結構化研究報告，含五大行為病徵分類、三大開發場景取證、異質化語義審計模型（HAM）防禦框架
+📄 [Paper3 完整研究報告 v2](paper3/Paper3_完整研究報告_v2.md) — 整合所有觀測資料的結構化研究報告，含五大行為病徵分類、三大開發場景取證、異質化語義審計模型（HAM）防禦框架、**第九章補強：Credential-Seeded Cognitive Poisoning（AML.TXX.019）複合攻擊向量**（2026-05-16 更新）
+
+📄 [Paper3 完整研究報告 v1](paper3/Paper3_完整研究報告.md) — 原始版本（保留存檔）
 
 ---
 
@@ -295,7 +302,8 @@ cognitive-layer-poisoning-research/
 │
 ├── paper3/
 │   ├── AI反省.md                          ← 行為崩解觀測紀錄（認知層投毒現象分類）
-│   └── Paper3_完整研究報告.md             ← 結構化研究報告（五大病徵 + HAM 防禦框架）
+│   ├── Paper3_完整研究報告.md             ← 結構化研究報告 v1（原始版本，保留存檔）
+│   └── Paper3_完整研究報告_v2.md         ← ✅ 結構化研究報告 v2（2026-05-16）第九章補強：AML.TXX.019
 │
 └── simulation/
     ├── clpmai_simulation.html             ← Symlinked / copy of root simulation file
@@ -414,4 +422,4 @@ Banqiao, New Taipei City, Taiwan
 
 → [Open Questions & Peer Review](DISCUSSION.md)
 
-*Last updated: 2026-05-13*
+*Last updated: 2026-05-16*
