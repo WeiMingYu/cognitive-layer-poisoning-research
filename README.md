@@ -160,6 +160,51 @@ Layer 0 identifies the preconditions that make the entire attack chain viable �
 
 📄 [Layer 1](paper2/CLPMAI_Paper2_Layer1.docx)
 
+#### Layer 1 — Defensive Framework: Controlled Adaptive Learning
+
+The natural countermeasure to Pipeline D-2 (adaptive feedback poisoning) is a **gated approval mechanism** inserted between real-world interactions and the training pipeline. Without this gate, "learning from the battlefield" is equivalent to sleeping with the door open.
+
+**Two-layer problem, two-layer solution:**
+
+| Attack Vector | Defense |
+| --- | --- |
+| Pipeline D-1: Static distillation source poisoning | Knowledge distillation with curated, audited source corpora |
+| Pipeline D-2: Dynamic adaptive feedback poisoning | Gated approval mechanism on all feedback before training ingestion |
+
+**Approval Gate Architecture (四層核准機制):**
+
+```
+Real-world interaction
+        ↓
+L1 — Automated Filter
+     (toxicity detection, factual consistency check, rule engine)
+        ↓ pass
+L2 — AI Audit
+     (secondary model reviews output quality and semantic drift)
+        ↓ pass
+L3 — Human Review (optional, high-stakes domains)
+     (domain expert confirmation before ingestion)
+        ↓ pass
+L4 — Weighted Ingestion
+     Correction data    → highest weight
+     Approved data      → standard weight
+     Unreviewed data    → quarantine / lowest weight
+        ↓
+Training pipeline (approved data only)
+```
+
+**Counter-intuitive finding:**
+
+> The more a system "learns from the battlefield," the more vulnerable it becomes to adaptive poisoning — unless a robust approval gate exists. Speed of learning and security of learning are in direct tension. Organizations that remove the Human (H) from RLHF to cut costs are trading long-term model integrity for short-term efficiency gains.
+
+**Design principle (from APEX Correction Layer, WeiMing Yu 2026):**
+
+> Knowledge distillation solves the static pollution problem.
+> The approval gate solves the dynamic pollution problem.
+> Neither alone is sufficient.
+
+This principle is validated by the early chatbot generation (Microsoft Tay, 2016): a system with zero approval gates was corrupted within 16 hours of public deployment. Modern distillation-targeted attacks are the precise, slow-burn evolution of the same vector — but now operating below the detection threshold of any single-session audit.
+
 ### Layer 2 — Acoustic Attack Surface
 
 STT pipelines are a completely unguarded attack entry point. Four independent vectors identified:
@@ -441,4 +486,4 @@ Banqiao, New Taipei City, Taiwan
 
 → [Open Questions & Peer Review](DISCUSSION.md)
 
-*Last updated: 2026-05-17 (Layer 1 補強：Pipeline D — Knowledge Distillation Source Poisoning)*
+*Last updated: 2026-05-17 (Layer 1 補強：Pipeline D + 四層核准機制防禦框架)*
