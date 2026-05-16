@@ -150,6 +150,12 @@ Layer 0 identifies the preconditions that make the entire attack chain viable �
 | **Pipeline B** — Selective Proxy Poisoning | Malicious API proxy intercepts and modifies responses only for target query types | Low-cost / free third-party API proxy services | Medium |
 | **Pipeline C** — Corpus & RAG Poisoning | Adversarial content seeded into training corpora and RAG knowledge bases | Reddit, StockTwits, Chinese financial forums used by FinGPT and similar tools | Low |
 
+| **Pipeline D** — Knowledge Distillation Source Poisoning | Adversarial content injected into the curated source corpus used for knowledge distillation — the "clean" filtered dataset that enterprises believe is safe | Enterprise knowledge distillation pipelines pulling from public forums, financial news, or open corpora to train domain-specific local models | Low–Medium |
+
+> **Counter-intuitive insight:** Knowledge distillation was originally motivated by the need to *avoid* pollution from noisy internet data — filtering only what the organization needs. This creates a false sense of security: defenders believe they have controlled the input, but if the curated source itself has been seeded with adversarial content, the distillation process faithfully concentrates the poison into the smaller model. The attacker's goal shifts from "inject into everything" to "inject into what the defender trusts most."
+
+> **Historical parallel:** Early-generation chatbots deployed on public networks (e.g., Microsoft Tay, 2016) were corrupted within hours through collective adversarial interaction — a crude, high-visibility form of corpus poisoning. Modern distillation-targeted attacks are the precise, low-visibility evolution of the same vector: instead of corrupting a live learning system in real time, the adversary pre-seeds the trusted source corpus that will be used to train the next generation of domain-specific models. No forensic trace remains after distillation is complete.
+
 > **Real-world validation — Mini Shai-Hulud (2026-05-11):** CVE-2026-45321 (CVSS 9.6). Adversaries (TeamPCP) hijacked the CI/CD pipelines of 170+ npm/PyPI packages including TanStack, Mistral AI, and UiPath, publishing 84 malicious versions carrying valid SLSA Build Level 3 certification in under six minutes — the first documented case of malicious packages passing cryptographic signature verification. Core technique: GitHub OIDC token hijacking caused malicious packages to be released through the legitimate official build pipeline. Sigstore correctly verified the build because the attacker controlled the build process itself. This directly validates §4.2: **when the adversary controls the signing environment, cryptographic signatures are no longer a reliable trust boundary.**
 
 📄 [Layer 1](paper2/CLPMAI_Paper2_Layer1.docx)
@@ -435,4 +441,4 @@ Banqiao, New Taipei City, Taiwan
 
 → [Open Questions & Peer Review](DISCUSSION.md)
 
-*Last updated: 2026-05-17*
+*Last updated: 2026-05-17 (Layer 1 補強：Pipeline D — Knowledge Distillation Source Poisoning)*
